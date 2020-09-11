@@ -1,0 +1,8 @@
+{
+  "name": "reabot-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:chiliwax/reabot-server.git",
+  "author": "Valentin Ichkour <valentin.ichkour@getmayday.co>",
+  "license": "MIT"
+}
