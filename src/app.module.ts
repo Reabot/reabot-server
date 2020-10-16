@@ -19,7 +19,7 @@ import { MessagesModule } from './messages/messages.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      `mongodb+srv://${process.env.DB_ADMIN}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
+      `${process.env.DB_PREFIX}://${process.env.DB_ADMIN}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?authSource=admin`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

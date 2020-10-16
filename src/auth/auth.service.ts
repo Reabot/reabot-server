@@ -20,12 +20,19 @@ export class AuthService {
     @InjectModel('User') private userModel: Model<User>,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+  async validateUser(username: string, pass: string): Promise<User> {
+    const user = await this.userModel.findOne({ username });
+
+    if (!user) {
+      return null;
     }
+
+    const valid = await bcrypt.compare(pass, user.password);
+
+    if (valid) {
+      return user;
+    }
+
     return null;
   }
 
@@ -66,12 +73,6 @@ export class AuthService {
         username: user.username,
       });
 
-      if (requestedUser == null) {
-        return {
-          message: 'User not found',
-        };
-      }
-
       const payload = {
         username: requestedUser.username,
         sub: requestedUser.id,
@@ -88,7 +89,8 @@ export class AuthService {
         access_token: this.jwtService.sign(payload),
       };
     } catch (err) {
-      return { message: 'Error: User not found' };
+      console.log(err);
+      throw new ConflictException();
     }
   }
 }
