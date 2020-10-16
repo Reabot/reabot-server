@@ -7,6 +7,7 @@ import {
   Body,
   Get,
 } from '@nestjs/common';
+import { ApiResponse, ApiBody } from '@nestjs/swagger';
 
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -19,8 +20,10 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.body);
+  async login(
+    @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
+  ): Promise<object> {
+    return this.authService.login(authCredentialsDto);
   }
 
   @Post('signup')
