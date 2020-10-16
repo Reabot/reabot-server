@@ -19,7 +19,7 @@ import { MessagesModule } from './messages/messages.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      `mongodb+srv://admin:ubdE6NSlaeN9gDBI@cluster0.ry3i1.mongodb.net/reabot?authSource=admin&replicaSet=atlas-faqib4-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true`,
+      `mongodb+srv://${process.env.DB_ADMIN}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
