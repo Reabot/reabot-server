@@ -5,9 +5,12 @@ import { Model } from 'mongoose';
 import { Room } from './interfaces/room.interface';
 import { User } from '../auth/interfaces/user.interface';
 
+import { RoomsGateway } from './rooms.gateway';
+
 @Injectable()
 export class RoomsService {
   constructor(
+    private roomsGateway: RoomsGateway,
     @InjectModel('User') private userModel: Model<User>,
     @InjectModel('Room') private roomModel: Model<Room>,
   ) {}
@@ -39,11 +42,16 @@ export class RoomsService {
 
     try {
       room.save();
+      // this.roomsGateway.onRoomCreate(room);
       return room;
     } catch (err) {
       throw err;
     }
 
     return {};
+  }
+
+  async joinRoom(body, user): Promise<any> {
+    console.log(body, user);
   }
 }

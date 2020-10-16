@@ -12,6 +12,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 
+import { AuthGateway } from './auth.gateway';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -23,7 +25,7 @@ import { jwtConstants } from './constants';
       signOptions: { expiresIn: '2h' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, AuthGateway],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -5,6 +5,7 @@ import {
   UseGuards,
   ValidationPipe,
   Body,
+  Get,
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
@@ -27,5 +28,11 @@ export class AuthController {
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<object> {
     return this.authService.signUp(authCredentialsDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getMe(@Request() req) {
+    return req.user;
   }
 }

@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RoomSchema } from '../schemas/room.schema';
 import { UserSchema } from '../schemas/user.schema';
 
+import { RoomsGateway } from './rooms.gateway';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -13,7 +15,7 @@ import { UserSchema } from '../schemas/user.schema';
       { name: 'User', schema: UserSchema },
     ]),
   ],
-  providers: [RoomsService],
+  providers: [RoomsService, RoomsGateway],
   exports: [RoomsService],
 })
 export class RoomsModule {}

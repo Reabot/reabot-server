@@ -22,4 +22,10 @@ export class RoomsController {
   async create(@Body() room, @Req() req): Promise<object> {
     return this.roomsService.createRoom(room, req.user);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('join')
+  async join(@Body() room, @Req() req): Promise<any> {
+    return this.roomsService.joinRoom(room, req.user);
+  }
 }

@@ -9,11 +9,14 @@ import { Model } from 'mongoose';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { User } from './interfaces/user.interface';
 
+import { AuthGateway } from './auth.gateway';
+
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private authGateway: AuthGateway,
     @InjectModel('User') private userModel: Model<User>,
   ) {}
 
@@ -24,6 +27,10 @@ export class AuthService {
       return result;
     }
     return null;
+  }
+
+  async me(): Promise<any> {
+    return 'test';
   }
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<object> {
@@ -59,7 +66,6 @@ export class AuthService {
         username: user.username,
       });
 
-      console.log('ici =>', requestedUser);
       if (requestedUser == null) {
         return {
           message: 'User not found',
@@ -70,6 +76,11 @@ export class AuthService {
         username: requestedUser.username,
         sub: requestedUser.id,
       };
+
+      this.authGateway.userLoggedIn({
+        id: requestedUser.id,
+        user: requestedUser.username,
+      });
 
       return {
         id: user.userId,
