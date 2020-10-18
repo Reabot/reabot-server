@@ -2,20 +2,20 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 import { User } from '../auth/interfaces/user.interface';
-// import {Rooms} from '../rooms/interfaces/room.interface'
+import { Room } from '../rooms/interfaces/room.interface';
 
-export type MessageDocument = Messages & Document;
+export type MessageDocument = Message & Document;
 
 @Schema({ timestamps: true })
-export class Messages {
+export class Message {
   @Prop()
   message: string;
 
-  // @Prop()
-  // room: Rooms;
+  @Prop()
+  room: Room;
 
   @Prop()
-  creator: User;
+  author: User;
 }
 
-export const MessagesSchema = SchemaFactory.createForClass(Messages);
+export const MessageSchema = SchemaFactory.createForClass(Message);

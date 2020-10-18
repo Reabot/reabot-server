@@ -42,7 +42,6 @@ export class RoomsService {
 
     try {
       room.save();
-      // this.roomsGateway.onRoomCreate(room);
       return room;
     } catch (err) {
       throw err;
