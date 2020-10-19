@@ -5,6 +5,13 @@
 ## Installation
 
 ```bash
+# clone the repository
+$ git clone git@github.com:Reabot/reabot-server.git
+
+$ cd reabot-server
+```
+
+```bash
 # build the containers
 $ docker-compose build
 ```
@@ -43,3 +50,11 @@ $ db.createUser({
 $ docker-compose build
 $ docker-compose up
 ```
+
+### API access
+
+> The api will be available on localhost:8080 or localhost:3000
+
+### API Documentation
+
+> The documentation of the api is available on localhost:\$PORT/api
