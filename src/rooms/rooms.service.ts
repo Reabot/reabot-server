@@ -17,7 +17,7 @@ export class RoomsService {
 
   async getListRooms() {
     try {
-      let list = await this.roomModel.find();
+      const list = await this.roomModel.find();
       return { rooms: list };
     } catch (e) {
       throw e;
@@ -26,7 +26,7 @@ export class RoomsService {
 
   async getUserListRooms(user): Promise<object> {
     try {
-      let list = await this.roomModel.find({ creator: user });
+      const list = await this.roomModel.find({ creator: user });
       return { rooms: list };
     } catch (e) {
       throw e;

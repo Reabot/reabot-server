@@ -9,7 +9,7 @@ import {
 @WebSocketGateway()
 export class AuthGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server;
-  users: number = 0;
+  users = 0;
 
   async handleConnection() {
     // // A client has connected

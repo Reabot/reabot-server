@@ -35,7 +35,7 @@ export class MessagesService {
       throw err;
     }
 
-    let messageToSave = new this.messageModel({
+    const messageToSave = new this.messageModel({
       message: body.message,
       room: roomFromDb,
       author: user,
