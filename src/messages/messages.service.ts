@@ -42,12 +42,11 @@ export class MessagesService {
     }
   }
 
-  async getListOfMessages(room): Promise<any> {
+  async getListOfMessages(roomId): Promise<any> {
     let roomFromDb = null;
     let messages = [];
-
     try {
-      roomFromDb = await this.roomModel.findById(room.query.roomId);
+      roomFromDb = await this.roomModel.findById(roomId);
     } catch (err) {
       return err;
     }
