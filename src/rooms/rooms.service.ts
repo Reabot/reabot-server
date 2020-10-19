@@ -1,19 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 import { Room } from './interfaces/room.interface';
-import { User } from '../auth/interfaces/user.interface';
-
-import { RoomsGateway } from './rooms.gateway';
+import { Message } from '../messages/interfaces/message.interface';
 
 @Injectable()
 export class RoomsService {
   constructor(
-    private roomsGateway: RoomsGateway,
-    @InjectModel('User') private userModel: Model<User>,
     @InjectModel('Room') private roomModel: Model<Room>,
+    @InjectModel('Message') private messageModel: Model<Message>,
   ) {}
+
+  async deleteAllMessagesByRoomId(roomId) {
+    let roomFromDb = null;
+    try {
+      roomFromDb = await this.roomModel.findById(roomId);
+    } catch (err) {
+      return err;
+    }
+
+    try {
+      await this.messageModel.deleteMany({ room: roomFromDb });
+    } catch (err) {
+      return err;
+    }
+  }
 
   async getListRooms() {
     try {
@@ -24,7 +36,7 @@ export class RoomsService {
     }
   }
 
-  async getUserListRooms(user): Promise<object> {
+  async getUserListRooms(user): Promise<any> {
     try {
       const list = await this.roomModel.find({ creator: user });
       return { rooms: list };
@@ -33,7 +45,7 @@ export class RoomsService {
     }
   }
 
-  async createRoom(body, user): Promise<object> {
+  async createRoom(body, user): Promise<any> {
     const room = new this.roomModel({
       name: body.name,
       creator: user,
@@ -46,11 +58,19 @@ export class RoomsService {
     } catch (err) {
       throw err;
     }
-
-    return {};
   }
 
-  async joinRoom(body, user): Promise<any> {
-    console.log(body, user);
+  async deleteRoom(room): Promise<any> {
+    try {
+      await this.deleteAllMessagesByRoomId(room.roomId);
+      const resp = await this.roomModel.findByIdAndDelete(room.roomId);
+      if (resp == null) {
+        throw new BadRequestException();
+      } else {
+        await this.deleteAllMessagesByRoomId(room.roomId);
+      }
+    } catch (err) {
+      throw err;
+    }
   }
 }

@@ -1,22 +1,19 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
+import { UsersService } from '../users/users.service';
 
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { User } from './interfaces/user.interface';
-
-import { AuthGateway } from './auth.gateway';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private authGateway: AuthGateway,
     @InjectModel('User') private userModel: Model<User>,
   ) {}
 
@@ -40,7 +37,7 @@ export class AuthService {
     return 'test';
   }
 
-  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<object> {
+  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<any> {
     const { username, password } = authCredentialsDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,7 +48,7 @@ export class AuthService {
     });
 
     try {
-      const payload = { username: username, sub: user.id };
+      const payload = { username, sub: user.id };
       await user.save();
 
       return {
@@ -67,7 +64,7 @@ export class AuthService {
     }
   }
 
-  async login(user: any) {
+  async login(user: any): Promise<any> {
     try {
       const requestedUser = await this.userModel.findOne({
         username: user.username,
@@ -77,11 +74,6 @@ export class AuthService {
         username: requestedUser.username,
         sub: requestedUser.id,
       };
-
-      this.authGateway.userLoggedIn({
-        id: requestedUser.id,
-        user: requestedUser.username,
-      });
 
       return {
         id: user.userId,
