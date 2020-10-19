@@ -7,8 +7,8 @@ import {
   Body,
   ValidationPipe,
 } from '@nestjs/common';
-import { MessagesService } from './messages.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { MessagesService } from './messages.service';
 
 import { CreateMessageDto } from './dto/create-message.dto';
 
@@ -18,7 +18,7 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Get('list')
-  async list(@Req() req): Promise<object> {
+  async list(@Req() req): Promise<any> {
     return this.messagesService.getListOfMessages(req.query.roomId);
   }
 

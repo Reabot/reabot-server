@@ -7,9 +7,7 @@ import {
   Body,
   Get,
 } from '@nestjs/common';
-import { ApiResponse, ApiBody } from '@nestjs/swagger';
 
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
@@ -24,14 +22,14 @@ export class AuthController {
   @Post('login')
   async login(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
-  ): Promise<object> {
+  ): Promise<any> {
     return this.authService.login(authCredentialsDto);
   }
 
   @Post('signup')
   async signUp(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
-  ): Promise<object> {
+  ): Promise<any> {
     return this.authService.signUp(authCredentialsDto);
   }
 

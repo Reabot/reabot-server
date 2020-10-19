@@ -24,7 +24,7 @@ export class RoomsService {
     }
   }
 
-  async getUserListRooms(user): Promise<object> {
+  async getUserListRooms(user): Promise<any> {
     try {
       const list = await this.roomModel.find({ creator: user });
       return { rooms: list };
@@ -33,7 +33,7 @@ export class RoomsService {
     }
   }
 
-  async createRoom(body, user): Promise<object> {
+  async createRoom(body, user): Promise<any> {
     const room = new this.roomModel({
       name: body.name,
       creator: user,

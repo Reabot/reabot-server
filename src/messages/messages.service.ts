@@ -8,7 +8,6 @@ import { User } from '../auth/interfaces/user.interface';
 import { Room } from '../rooms/interfaces/room.interface';
 
 import { RoomsGateway } from '../rooms/rooms.gateway';
-import { Socket, Server } from 'socket.io';
 
 @Injectable()
 export class MessagesService {
@@ -20,14 +19,7 @@ export class MessagesService {
   ) {}
 
   async createMessage(body, user): Promise<any> {
-    let userFromDb = null;
     let roomFromDb = null;
-
-    try {
-      userFromDb = await this.userModel.findById(user.userId);
-    } catch (err) {
-      throw err;
-    }
 
     try {
       roomFromDb = await this.roomModel.findById(body.roomId);
@@ -50,7 +42,7 @@ export class MessagesService {
     }
   }
 
-  async getListOfMessages(roomId): Promise<object> {
+  async getListOfMessages(roomId): Promise<any> {
     let room = null;
     let messages = [];
     try {
@@ -60,8 +52,8 @@ export class MessagesService {
     }
 
     try {
-      messages = await this.messageModel.find({ room: room });
-      return { messages: messages };
+      messages = await this.messageModel.find({ room });
+      return { messages };
     } catch (err) {
       return err;
     }

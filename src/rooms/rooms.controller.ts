@@ -7,19 +7,19 @@ export class RoomsController {
   constructor(private roomsService: RoomsService) {}
 
   @Get('list')
-  async list(@Req() req) {
+  async list() {
     return this.roomsService.getListRooms();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('userList')
-  async userList(@Req() req): Promise<object> {
+  async userList(@Req() req): Promise<any> {
     return this.roomsService.getUserListRooms(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('create')
-  async create(@Body() room, @Req() req): Promise<object> {
+  async create(@Body() room, @Req() req): Promise<any> {
     return this.roomsService.createRoom(room, req.user);
   }
 
