@@ -1,6 +1,17 @@
-import { Controller, Get, Req, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Req,
+  Post,
+  Body,
+  UseGuards,
+  Delete,
+  ValidationPipe,
+} from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
+import { DeleteRoomDto } from './dto/delete-room.dto';
 
 @Controller('rooms')
 export class RoomsController {
@@ -24,8 +35,11 @@ export class RoomsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('join')
-  async join(@Body() room, @Req() req): Promise<any> {
-    return this.roomsService.joinRoom(room, req.user);
+  @Delete('delete')
+  async delete(
+    @Body(ValidationPipe) deleteRoomDto: DeleteRoomDto,
+  ): Promise<any> {
+    // this.roomsService.deleteAllMessagesByRoomId(deleteRoomDto.roomId);
+    return this.roomsService.deleteRoom(deleteRoomDto);
   }
 }

@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
 import { UsersModule } from '../users/users.module';
 
 import { UserSchema } from '../schemas/user.schema';
@@ -23,7 +22,7 @@ import { jwtConstants } from './constants';
       signOptions: { expiresIn: '2h' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
