@@ -6,7 +6,6 @@ import {
   Post,
   Body,
   ValidationPipe,
-  Param,
   Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
