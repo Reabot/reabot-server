@@ -11,6 +11,26 @@ $ git clone git@github.com:Reabot/reabot-server.git
 $ cd reabot-server
 ```
 
+### Modify .env file
+
+```bash
+$ cp .env.example .env
+
+$ nano .env
+```
+
+.env file should look like that
+
+```bash
+DB_HOST=db:27017
+DB_NAME=your-db-name
+DB_ADMIN=your-admin-username
+DB_PASSWORD=your-admin-password
+# DB_PREFIX will be mongodb in local or mongodb+srv otherwise
+DB_PREFIX=mongodb
+
+```
+
 ```bash
 # build the containers
 $ docker-compose build
@@ -44,26 +64,6 @@ $ db.createUser({
 })
 ```
 
-### Modify .env file
-
-```bash
-$ cp .env.example .env
-
-$ nano .env
-```
-
-.env file should look like that
-
-```bash
-DB_HOST=db:27017
-DB_NAME=your-db-name
-DB_ADMIN=your-admin-username
-DB_PASSWORD=your-admin-password
-# DB_PREFIX will be mongodb in local or mongodb+srv otherwise
-DB_PREFIX=mongodb
-
-```
-
 ### Start containers
 
 ```bash
@@ -77,4 +77,4 @@ The api will be available on http://localhost:8080 or http://localhost:3000
 
 ### API Documentation
 
-The documentation of the api is available on http://localhost:8080/api (depending on the port)
+The documentation of the api is available on http://localhost:8080/api (depending on the port).
