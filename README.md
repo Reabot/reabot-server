@@ -67,7 +67,6 @@ $ db.createUser({
 ### Start containers
 
 ```bash
-$ docker-compose build
 $ docker-compose up
 ```
 
