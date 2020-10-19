@@ -42,17 +42,18 @@ export class MessagesService {
     }
   }
 
-  async getListOfMessages(roomId): Promise<any> {
-    let room = null;
+  async getListOfMessages(room): Promise<any> {
+    let roomFromDb = null;
     let messages = [];
+
     try {
-      room = await this.roomModel.findById(roomId);
+      roomFromDb = await this.roomModel.findById(room.query.roomId);
     } catch (err) {
       return err;
     }
 
     try {
-      messages = await this.messageModel.find({ room });
+      messages = await this.messageModel.find({ room: roomFromDb });
       return { messages };
     } catch (err) {
       return err;
