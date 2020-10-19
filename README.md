@@ -73,8 +73,8 @@ $ docker-compose up
 
 ### API access
 
-> The api will be available on localhost:8080 or localhost:3000
+The api will be available on http://localhost:8080 or http://localhost:3000
 
 ### API Documentation
 
-> The documentation of the api is available on localhost:\$PORT/api
+The documentation of the api is available on http://localhost:8080/api (depending on the port)
