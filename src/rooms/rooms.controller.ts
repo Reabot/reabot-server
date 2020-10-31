@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class RoomsController {
   constructor(private roomsService: RoomsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('list')
   async list(@Req() req) {
     return this.roomsService.getListRooms();
