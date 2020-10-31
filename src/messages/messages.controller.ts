@@ -6,11 +6,13 @@ import {
   Post,
   Body,
   ValidationPipe,
+  Query,
 } from '@nestjs/common';
-import { MessagesService } from './messages.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { MessagesService } from './messages.service';
 
 import { CreateMessageDto } from './dto/create-message.dto';
+import { ListMessageDto } from './dto/list-message.dto';
 
 @Controller('messages')
 export class MessagesController {
@@ -18,8 +20,10 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Get('list')
-  async list(@Req() req): Promise<object> {
-    return this.messagesService.getListOfMessages(req.query.roomId);
+  async list(
+    @Query(ValidationPipe) listMessageDto: ListMessageDto,
+  ): Promise<any> {
+    return this.messagesService.getListOfMessages(listMessageDto.roomId);
   }
 
   @UseGuards(JwtAuthGuard)

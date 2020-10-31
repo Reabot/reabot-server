@@ -2,6 +2,10 @@
 
 > Server side of the Reabot project
 
+## Demo
+
+https://reabot.xyz
+
 ## Installation
 
 ```bash

@@ -2,17 +2,12 @@ import {
   WebSocketGateway,
   WebSocketServer,
   SubscribeMessage,
-  OnGatewayInit,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway()
-export class RoomsGateway implements OnGatewayInit {
+export class RoomsGateway {
   @WebSocketServer() wss: Server;
-
-  constructor() {}
-
-  afterInit() {}
 
   @SubscribeMessage('joinRoom')
   async joinRoom(socket: Socket, data) {
