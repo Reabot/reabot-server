@@ -15,8 +15,6 @@ import RoomsController from './rooms/rooms.controller';
 import RoomsModule from './rooms/rooms.module';
 import MessagesModule from './messages/messages.module';
 
-console.log(process.env.DB_URI);
-
 @Module({
   imports: [
     ConfigModule.forRoot(),

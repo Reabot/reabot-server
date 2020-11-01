@@ -9,7 +9,6 @@ import { Room } from '../rooms/interfaces/room.interface';
 import RoomsGateway from '../rooms/rooms.gateway';
 
 import CreateMessageDto from './dto/create-message.dto';
-import DeleteMessageDto from './dto/create-message.dto';
 
 @Injectable()
 export default class MessagesService {
