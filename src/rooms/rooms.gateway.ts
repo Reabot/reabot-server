@@ -6,7 +6,7 @@ import {
 import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway()
-export class RoomsGateway {
+export default class RoomsGateway {
   @WebSocketServer() wss: Server;
 
   @SubscribeMessage('joinRoom')
@@ -15,7 +15,11 @@ export class RoomsGateway {
     this.wss.to(data.room).emit('onJoinRoom', data.user);
   }
 
-  async sendMessage(data) {
-    this.wss.to(data.room.id).emit('onNewMessage', data);
+  async sendMessage(id, data) {
+    this.wss.to(id).emit('onNewMessage', data);
+  }
+
+  async createRoom(data) {
+    this.wss.emit('onNewRoom', data);
   }
 }

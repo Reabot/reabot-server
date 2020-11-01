@@ -1,61 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Message } from './interfaces/message.interface';
 
-import { User } from '../auth/interfaces/user.interface';
 import { Room } from '../rooms/interfaces/room.interface';
 
-import { RoomsGateway } from '../rooms/rooms.gateway';
+import RoomsGateway from '../rooms/rooms.gateway';
 
 @Injectable()
-export class MessagesService {
+export default class MessagesService {
   constructor(
-    @InjectModel('User') private userModel: Model<User>,
-    @InjectModel('Room') private roomModel: Model<Room>,
-    @InjectModel('Message') private messageModel: Model<Message>,
+    @InjectModel('Room') private RoomModel: Model<Room>,
+    @InjectModel('Message') private MessageModel: Model<Message>,
     private roomsGateway: RoomsGateway,
   ) {}
 
   async createMessage(body, user): Promise<any> {
-    let roomFromDb = null;
-
-    try {
-      roomFromDb = await this.roomModel.findById(body.roomId);
-    } catch (err) {
-      throw err;
-    }
-
-    const messageToSave = new this.messageModel({
+    const roomFromDb = await this.RoomModel.findById(body.roomId);
+    if (roomFromDb === null)
+      return new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    const messageToSave = new this.MessageModel({
       message: body.message,
       room: roomFromDb,
       author: user,
     });
 
-    try {
-      messageToSave.save();
-      this.roomsGateway.sendMessage(messageToSave);
-      return messageToSave;
-    } catch (err) {
-      throw err;
-    }
+    messageToSave.save();
+    this.roomsGateway.sendMessage(body.roomId, messageToSave);
+    return messageToSave;
   }
 
   async getListOfMessages(roomId): Promise<any> {
     let roomFromDb = null;
     let messages = [];
-    try {
-      roomFromDb = await this.roomModel.findById(roomId);
-    } catch (err) {
-      return err;
-    }
-
-    try {
-      messages = await this.messageModel.find({ room: roomFromDb });
-      return { messages };
-    } catch (err) {
-      return err;
-    }
+    roomFromDb = await this.RoomModel.findById(roomId);
+    if (roomFromDb === null)
+      return new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    messages = await this.MessageModel.find({ room: roomFromDb });
+    return { messages };
   }
 }

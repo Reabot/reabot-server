@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MinLength } from 'class-validator';
 
-export class CreateMessageDto {
+export default class CreateMessageDto {
   @IsString()
   @ApiProperty()
   roomId: string;

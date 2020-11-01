@@ -8,13 +8,13 @@ import {
   Delete,
   ValidationPipe,
 } from '@nestjs/common';
-import { RoomsService } from './rooms.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import RoomsService from './rooms.service';
+import JwtAuthGuard from '../auth/jwt-auth.guard';
 
-import { DeleteRoomDto } from './dto/delete-room.dto';
+import DeleteRoomDto from './dto/delete-room.dto';
 
 @Controller('rooms')
-export class RoomsController {
+export default class RoomsController {
   constructor(private roomsService: RoomsService) {}
 
   @UseGuards(JwtAuthGuard)

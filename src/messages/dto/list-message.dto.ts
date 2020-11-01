@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class ListMessageDto {
+export default class ListMessageDto {
   @IsNotEmpty()
   roomId: string;
 }

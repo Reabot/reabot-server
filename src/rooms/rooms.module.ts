@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RoomsService } from './rooms.service';
+import RoomsService from './rooms.service';
 
 import { RoomSchema } from '../schemas/room.schema';
 import { MessageSchema } from '../schemas/message.schema';
 
-import { RoomsGateway } from './rooms.gateway';
+import RoomsGateway from './rooms.gateway';
 
 @Module({
   imports: [
@@ -17,4 +17,4 @@ import { RoomsGateway } from './rooms.gateway';
   providers: [RoomsService, RoomsGateway],
   exports: [RoomsService],
 })
-export class RoomsModule {}
+export default class RoomsModule {}

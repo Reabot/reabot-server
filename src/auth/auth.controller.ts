@@ -1,10 +1,10 @@
 import { Controller, Post, ValidationPipe, Body } from '@nestjs/common';
 
-import { AuthService } from './auth.service';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import AuthService from './auth.service';
+import AuthCredentialsDto from './dto/auth-credentials.dto';
 
 @Controller('auth')
-export class AuthController {
+export default class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')

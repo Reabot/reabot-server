@@ -1,24 +1,26 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
-import { UsersService } from '../users/users.service';
 
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import AuthCredentialsDto from './dto/auth-credentials.dto';
 import { User } from './interfaces/user.interface';
 
 @Injectable()
-export class AuthService {
+export default class AuthService {
   constructor(
-    private usersService: UsersService,
     private jwtService: JwtService,
-    @InjectModel('User') private userModel: Model<User>,
+    @InjectModel('User') private UserModel: Model<User>,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<User> {
-    const user = await this.userModel.findOne({ username });
+    const user = await this.UserModel.findOne({ username });
 
     if (!user) {
       return null;
@@ -33,16 +35,12 @@ export class AuthService {
     return null;
   }
 
-  async me(): Promise<any> {
-    return 'test';
-  }
-
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<any> {
     const { username, password } = authCredentialsDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new this.userModel({
+    const user = new this.UserModel({
       username,
       password: hashedPassword,
     });
@@ -64,25 +62,40 @@ export class AuthService {
     }
   }
 
-  async login(user: any): Promise<any> {
-    try {
-      const requestedUser = await this.userModel.findOne({
-        username: user.username,
+  async checkPassword(password, passwordToCheck): Promise<any> {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, passwordToCheck, (error, isMatch) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(isMatch);
       });
+    });
+  }
 
-      const payload = {
-        username: requestedUser.username,
-        sub: requestedUser.id,
-      };
+  async login(user: any): Promise<any> {
+    const requestedUser = await this.UserModel.findOne({
+      username: user.username,
+    });
 
-      return {
-        id: user.userId,
-        username: user.username,
-        access_token: this.jwtService.sign(payload),
-      };
-    } catch (err) {
-      console.log(err);
-      throw new ConflictException();
+    if (requestedUser === null) {
+      return new NotFoundException();
     }
+
+    const payload = {
+      username: requestedUser.username,
+      sub: requestedUser.id,
+    };
+
+    const res = await this.checkPassword(user.password, requestedUser.password);
+    if (!res) {
+      return new NotFoundException('User not found');
+    }
+
+    return {
+      id: user.userId,
+      username: user.username,
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }
