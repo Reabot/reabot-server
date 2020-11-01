@@ -79,7 +79,7 @@ export default class AuthService {
     });
 
     if (requestedUser === null) {
-      return new NotFoundException();
+      throw new NotFoundException();
     }
 
     const payload = {
@@ -89,7 +89,7 @@ export default class AuthService {
 
     const res = await this.checkPassword(user.password, requestedUser.password);
     if (!res) {
-      return new NotFoundException('User not found');
+      throw new NotFoundException('User not found');
     }
 
     return {
