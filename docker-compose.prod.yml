@@ -2,15 +2,14 @@ version: '3.7'
 
 services:
   reabot_server:
-    restart: always
     build:
       context: .
-      target: development
+      target: production
     ports:
       - '3000:3000'
-    command: yarn start:dev
+    command: yarn start:prod
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - DB_URI=${DB_URI}
     env_file:
       - '.env'

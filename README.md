@@ -26,58 +26,52 @@ $ nano .env
 .env file should look like that
 
 ```bash
-DB_HOST=db:27017
-DB_NAME=your-db-name
-DB_ADMIN=your-admin-username
-DB_PASSWORD=your-admin-password
-# DB_PREFIX will be mongodb in local or mongodb+srv otherwise
-DB_PREFIX=mongodb
+# For Docker, please user host.docker.internal instead of localhost
+
+DB_URI=mongodb://<USERNAME>:<PASSWORD>@localhost:27017/<DB_NAME>?authSource=admin
+
+or
+
+DB_URI=mongodb://localhost:27017/<DB_NAME>
+```
+
+## Simple usage
+
+### Development
 
 ```
+$ yarn run start:dev
+```
+
+### Production
+
+```
+$ yarn run build
+$ yarn run start:prod
+```
+
+## Using Docker
+
+### Development environment
 
 ```bash
 # build the containers
-$ docker-compose build
+$ docker-compose -f docker-compose.dev.yml build
+$ docker-compose -f docker-compose.dev.yml up
 ```
 
-### Creating a mongodb admin user
+### Development environment
 
 ```bash
-# mongodb container
-$ docker container start <CONTAINER_ID>
-
-# exec bash inside the container
-$ docker exec -it db_mongo bash
-
-# open mongo shell
-$ mongo
-
-# move to admin db
-$ use admin
-
-# create user for admin db
-$ db.createUser({
-  user: 'your-admin-username',
-  pwd: 'your-admin-password',
-  roles: [
-    {
-      role: 'readWrite',
-      db: 'admin'
-    }
-  ]
-})
-```
-
-### Start containers
-
-```bash
-$ docker-compose up
+# build the containers
+$ docker-compose -f docker-compose.prod.yml build
+$ docker-compose -f docker-compose.prod.yml up
 ```
 
 ### API access
 
-The api will be available on http://localhost:8080 or http://localhost:3000
+The api will be available on or http://localhost:3000
 
 ### API Documentation
 
-The documentation of the api is available on http://localhost:8080/api (depending on the port).
+The documentation of the api is available on http://localhost:3000/api

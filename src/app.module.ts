@@ -15,17 +15,16 @@ import RoomsController from './rooms/rooms.controller';
 import RoomsModule from './rooms/rooms.module';
 import MessagesModule from './messages/messages.module';
 
+console.log(process.env.DB_URI);
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(
-      `${process.env.DB_PREFIX}://${process.env.DB_ADMIN}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?authSource=admin`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-      },
-    ),
+    MongooseModule.forRoot(`${process.env.DB_URI}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    }),
     AuthModule,
     UsersModule,
     RoomsModule,
