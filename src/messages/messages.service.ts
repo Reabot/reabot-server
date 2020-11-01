@@ -8,6 +8,9 @@ import { Room } from '../rooms/interfaces/room.interface';
 
 import RoomsGateway from '../rooms/rooms.gateway';
 
+import CreateMessageDto from './dto/create-message.dto';
+import DeleteMessageDto from './dto/create-message.dto';
+
 @Injectable()
 export default class MessagesService {
   constructor(
@@ -16,7 +19,7 @@ export default class MessagesService {
     private roomsGateway: RoomsGateway,
   ) {}
 
-  async createMessage(body, user): Promise<any> {
+  async createMessage(body: CreateMessageDto, user): Promise<any> {
     const roomFromDb = await this.RoomModel.findById(body.roomId);
     if (roomFromDb === null)
       return new HttpException('Bad request', HttpStatus.BAD_REQUEST);
