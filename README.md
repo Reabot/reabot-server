@@ -74,4 +74,4 @@ The api will be available on http://localhost:3000
 
 ### API Documentation
 
-The documentation of the api is available on http://localhost:3000/api
+The documentation of the api is available on http://localhost:3000/api/#/
