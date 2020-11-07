@@ -70,7 +70,7 @@ $ docker-compose -f docker-compose.prod.yml up
 
 ### API access
 
-The api will be available on or http://localhost:3000
+The api will be available on http://localhost:3000
 
 ### API Documentation
 
